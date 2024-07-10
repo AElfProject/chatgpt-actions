@@ -1,0 +1,234 @@
+openapi: 3.1.0
+info:
+  title: AElf Blockchain Data API
+  description: API for interacting with aelf's blockchain data for different chains.
+  version: 1.0.0
+servers:
+  - url: https://25b0-202-156-61-238.ngrok-free.app/
+    description: aelf api aggregator
+paths:
+  /get-chains:
+    get:
+      operationId: getChains
+      summary: Get a list of supported chains.
+      responses:
+        '200':
+          description: A list of supported chains.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  chains:
+                    type: array
+                    items:
+                      type: string
+  /get-balance:
+    get:
+      operationId: getBalance
+      summary: Get the balance of an address in the corresponding chain.
+      parameters:
+        - name: address
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: chainId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Balance information.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid request parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /get-price:
+    get:
+      operationId: getPrice
+      summary: Get the price of a cryptocurrency.
+      parameters:
+        - name: symbol
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ELF
+      responses:
+        '200':
+          description: Price information.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                  price:
+                    type: number
+        '404':
+          description: Token not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '400':
+          description: Invalid request parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /get-transaction-result:
+    get:
+      operationId: getTransactionResult
+      summary: Get the result of a transaction in a specific chain.
+      parameters:
+        - name: transactionId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: chainId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transaction result.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid request parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /get-block-height:
+    get:
+      operationId: getBlockHeight
+      summary: Get the current block height in a specific chain.
+      parameters:
+        - name: chainId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Block height information.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid request parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /block-by-height:
+    get:
+      operationId: getBlockByHeight
+      summary: Get block information by block height in a specific chain.
+      parameters:
+        - name: blockHeight
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: includeTransactions
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: chainId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Block information.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid request parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  /get-transactions-by-address:
+    get:
+      operationId: getTransactionsByAddress
+      summary: Get transactions by address in a specific chain. Default value of page is 0.
+      parameters:
+        - name: address
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: chainId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transactions information.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Invalid request parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
