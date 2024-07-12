@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  chatgpt-api:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - CMC_API_KEY=${CMC_API_KEY}
+      - FLASK_APP=api.py
