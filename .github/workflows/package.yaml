@@ -5,6 +5,7 @@ on:
     branches: ['master']
 env:
   CMC_API_KEY: ${{ secrets.CMC_API_KEY }}
+  FLASK_APP: api.py
 
 jobs:
   build-and-push-image:
